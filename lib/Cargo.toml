@@ -1,0 +1,15 @@
+[package]
+name = "tiefbloglib"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+repository.workspace = true
+readme.workspace = true
+license.workspace = true
+
+[dependencies]
+
+[lib]
+name = "tiefbloglib"
+path = "src/lib.rs"
+crate-type = ["lib"]

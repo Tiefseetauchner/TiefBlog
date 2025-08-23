@@ -1,0 +1,13 @@
+[workspace]
+resolver = "3"
+members = ["lib", "servecli"]
+
+[workspace.package]
+version = "0.1.0"
+authors = ["Lena Tauchner <tiefseetauchner@lukechriswalker.at>"]
+edition = "2024"
+repository = "https://github.com/Tiefseetauchner/TiefBlog"
+# homepage = "https://tiefseetauchner.github.io/TiefDownConverter/"
+# documentation = "https://github.com/Tiefseetauchner/TiefDownConverter/blob/main/docs/docs.pdf"
+readme = "README.md"
+license = "MIT"
