@@ -1,5 +1,5 @@
 [package]
-name = "tiefbloglib"
+name = "tiefblog-lib"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
@@ -8,6 +8,11 @@ readme.workspace = true
 license.workspace = true
 
 [dependencies]
+comrak = { version = "0.41", default-features = false }
+color-eyre = { version = "0.6", default-features = false }
+log = "0.4"
+colog = "1.3"
+env_logger = "0.11"
 
 [lib]
 name = "tiefbloglib"

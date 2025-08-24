@@ -6,9 +6,9 @@ use hyper::service::service_fn;
 use hyper::{Method, Request, Response};
 use hyper_util::rt::TokioIo;
 use log::{debug, error};
-use std::convert::Infallible;
 use std::net::SocketAddr;
-use tiefbloglib::blog_mgmt::get_blog_post;
+use tiefbloglib::path_resolution::{self, PathResolver};
+use tiefbloglib::render::render_page;
 use tokio::net::TcpListener;
 
 pub(crate) async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
@@ -37,15 +37,19 @@ pub(crate) async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync>
     }
 }
 
-async fn hello(req: Request<hyper::body::Incoming>) -> Result<Response<Full<Bytes>>, Infallible> {
-    match (req.method(), req.uri().path()) {
-        (&Method::GET, "/") => Ok(Response::builder()
-            .status(200)
-            .body(Full::new(Bytes::from(get_blog_post())))
-            .unwrap()),
-        _ => Ok(Response::builder()
-            .status(404)
-            .body(Full::new(Bytes::from("Not Found")))
-            .unwrap()),
+async fn hello(req: Request<hyper::body::Incoming>) -> Result<Response<Full<Bytes>>> {
+    let path_resolver = get_path_resolver(req.method());
+
+    Ok(Response::new(Full::from(Bytes::from(render_page(
+        &path_resolver(req.uri().path())?,
+    )?))))
+}
+
+pub fn get_path_resolver(method: &Method) -> PathResolver {
+    // We possibly will have to add more methods in the future
+    // but right now, let's just do get.
+    match method {
+        &Method::GET => path_resolution::resolve_get_path,
+        _ => path_resolution::resolve_unknown_path,
     }
 }
