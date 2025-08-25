@@ -41,7 +41,7 @@ async fn hello(req: Request<hyper::body::Incoming>) -> Result<Response<Full<Byte
     let path_resolver = get_path_resolver(req.method());
 
     Ok(Response::new(Full::from(Bytes::from(render_page(
-        &path_resolver(req.uri().path())?,
+        &path_resolver(req.uri().path())(req.uri().query())?,
     )?))))
 }
 
